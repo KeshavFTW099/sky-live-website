@@ -40,29 +40,29 @@ async function seedDatabase() {
       console.log(`[DB Seed] Created default admin user: ${username}`);
     }
 
-    // 2. Seed CMS Content if none exists
-    await Content.deleteMany({});
+    // 2. Seed CMS Content ONLY if the collection is empty
+    // IMPORTANT: Never wipe existing content — admin edits must be preserved
     const contentCount = await Content.countDocuments();
     if (contentCount === 0) {
-      // Look for the original content.json file we backed up
-      const backupPath = path.join(process.cwd(), 'public_vite', 'content.json');
-      const rootPath = path.join(process.cwd(), 'content.json');
-      
+      // In production (Vercel), content.json lives in the public/ directory.
+      // In development, it may also exist at the project root as a fallback.
+      const publicPath = path.join(process.cwd(), 'public', 'content.json');
+      const rootPath   = path.join(process.cwd(), 'content.json');
+
       let filePath = '';
-      if (fs.existsSync(backupPath)) {
-        filePath = backupPath;
+      if (fs.existsSync(publicPath)) {
+        filePath = publicPath;
       } else if (fs.existsSync(rootPath)) {
         filePath = rootPath;
       }
 
       if (filePath) {
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const fileContent  = fs.readFileSync(filePath, 'utf-8');
         const parsedContent = JSON.parse(fileContent);
-        
         await Content.create(parsedContent);
         console.log(`[DB Seed] Successfully seeded default CMS content from ${path.basename(filePath)}`);
       } else {
-        console.warn('[DB Seed] Warning: content.json backup file not found. Skipping content seed.');
+        console.warn('[DB Seed] Warning: content.json not found. Skipping content seed.');
       }
     }
   } catch (error) {
