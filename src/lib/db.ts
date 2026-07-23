@@ -29,8 +29,8 @@ async function seedDatabase() {
     // 1. Seed Admin User if none exists
     const adminCount = await User.countDocuments();
     if (adminCount === 0) {
-      const username = process.env.ADMIN_USERNAME || 'admin';
-      const password = process.env.ADMIN_PASSWORD || 'adminpassword123';
+      const username = process.env.ADMIN_USERNAME || 'sky_admin';
+      const password = process.env.ADMIN_PASSWORD || '9908140066@sky';
       const hashedPassword = await bcrypt.hash(password, 10);
 
       await User.create({
