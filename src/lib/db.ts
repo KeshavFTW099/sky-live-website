@@ -103,4 +103,37 @@ async function dbConnect() {
   return cached.conn;
 }
 
+export async function getContent() {
+  try {
+    await dbConnect();
+    const contentDoc = await Content.findOne({});
+    if (contentDoc) {
+      return JSON.parse(JSON.stringify(contentDoc));
+    }
+  } catch (error) {
+    console.error('[DB] Failed to fetch content from database, falling back to local content.json:', error);
+  }
+
+  // Fallback to local content.json
+  try {
+    const publicPath = path.join(process.cwd(), 'public', 'content.json');
+    const rootPath = path.join(process.cwd(), 'content.json');
+    let filePath = '';
+    if (fs.existsSync(publicPath)) {
+      filePath = publicPath;
+    } else if (fs.existsSync(rootPath)) {
+      filePath = rootPath;
+    }
+
+    if (filePath) {
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(fileContent);
+    }
+  } catch (err) {
+    console.error('[DB] Failed to read local content.json fallback:', err);
+  }
+
+  return null;
+}
+
 export default dbConnect;

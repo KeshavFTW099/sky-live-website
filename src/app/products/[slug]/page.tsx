@@ -1,5 +1,4 @@
-import dbConnect from '@/lib/db';
-import Content from '@/models/Content';
+import { getContent } from '@/lib/db';
 import ClientLayout from '@/components/ClientLayout';
 import DynamicProductClient from '@/components/DynamicProductClient';
 
@@ -12,9 +11,7 @@ interface PageProps {
 export default async function DynamicProductPage({ params }: PageProps) {
   const { slug } = await params;
 
-  await dbConnect();
-  const contentDoc = await Content.findOne({});
-  const content = contentDoc ? JSON.parse(JSON.stringify(contentDoc)) : null;
+  const content = await getContent();
 
   return (
     <ClientLayout initialContent={content}>

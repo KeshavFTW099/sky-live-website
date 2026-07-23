@@ -1,15 +1,11 @@
-import dbConnect from '@/lib/db';
-import Content from '@/models/Content';
+import { getContent } from '@/lib/db';
 import ClientLayout from '@/components/ClientLayout';
 import LegalPageClient from '@/components/LegalPageClient';
 
 export const revalidate = 0;
 
 export default async function DisclaimerPage() {
-  await dbConnect();
-
-  const contentDoc = await Content.findOne({});
-  const content = contentDoc ? JSON.parse(JSON.stringify(contentDoc)) : null;
+  const content = await getContent();
 
   return (
     <ClientLayout initialContent={content}>
