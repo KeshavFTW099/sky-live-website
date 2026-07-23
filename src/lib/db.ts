@@ -26,18 +26,27 @@ if (!cached) {
 
 async function seedDatabase() {
   try {
-    // 1. Seed Admin User if none exists
-    const adminCount = await User.countDocuments();
-    if (adminCount === 0) {
-      const username = process.env.ADMIN_USERNAME || 'sky_admin';
-      const password = process.env.ADMIN_PASSWORD || '9908140066@sky';
-      const hashedPassword = await bcrypt.hash(password, 10);
+    // 1. Seed/Update Admin User
+    const username = process.env.ADMIN_USERNAME || 'sky_admin';
+    const password = process.env.ADMIN_PASSWORD || '9908140066@sky';
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    const adminUser = await User.findOne({ username });
+    if (!adminUser) {
+      // If we are migrating from the old 'admin' user, clean it up
+      if (username !== 'admin') {
+        await User.deleteOne({ username: 'admin' });
+      }
       await User.create({
         username,
         password: hashedPassword,
       });
       console.log(`[DB Seed] Created default admin user: ${username}`);
+    } else {
+      // Update the password in case it was changed in environment configuration
+      adminUser.password = hashedPassword;
+      await adminUser.save();
+      console.log(`[DB Seed] Updated admin user password for: ${username}`);
     }
 
     // 2. Seed CMS Content ONLY if the collection is empty
