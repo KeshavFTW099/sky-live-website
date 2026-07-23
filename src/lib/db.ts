@@ -32,7 +32,7 @@ async function seedDatabase() {
       const username = process.env.ADMIN_USERNAME || 'admin';
       const password = process.env.ADMIN_PASSWORD || 'adminpassword123';
       const hashedPassword = await bcrypt.hash(password, 10);
-      
+
       await User.create({
         username,
         password: hashedPassword,
@@ -47,7 +47,7 @@ async function seedDatabase() {
       // In production (Vercel), content.json lives in the public/ directory.
       // In development, it may also exist at the project root as a fallback.
       const publicPath = path.join(process.cwd(), 'public', 'content.json');
-      const rootPath   = path.join(process.cwd(), 'content.json');
+      const rootPath = path.join(process.cwd(), 'content.json');
 
       let filePath = '';
       if (fs.existsSync(publicPath)) {
@@ -57,7 +57,7 @@ async function seedDatabase() {
       }
 
       if (filePath) {
-        const fileContent  = fs.readFileSync(filePath, 'utf-8');
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
         const parsedContent = JSON.parse(fileContent);
         await Content.create(parsedContent);
         console.log(`[DB Seed] Successfully seeded default CMS content from ${path.basename(filePath)}`);
@@ -92,7 +92,7 @@ async function dbConnect() {
       return m;
     });
   }
-  
+
   try {
     cached.conn = await cached.promise;
   } catch (e) {
