@@ -373,8 +373,6 @@ export default function Footer({ footerContent, onOpenContact, navigateTo, servi
             <a href="/cookie-policy" onClick={(e) => handleFooterLinkClick(e, '/cookie-policy')} className="footer-bottom-link" style={{ textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '12px' }}>Cookie Policy</a>
             <span style={{ color: 'var(--border-color-dark)', fontSize: '12px' }}>|</span>
             <a href="/disclaimer" onClick={(e) => handleFooterLinkClick(e, '/disclaimer')} className="footer-bottom-link" style={{ textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '12px' }}>Disclaimer</a>
-            <span style={{ color: 'var(--border-color-dark)', fontSize: '12px' }}>|</span>
-            <a href="/admin" onClick={(e) => { e.preventDefault(); navigateTo('/admin'); }} className="footer-bottom-link" style={{ opacity: 0.35, textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '12px' }}>CMS Login</a>
           </div>
 
         </div>

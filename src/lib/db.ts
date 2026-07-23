@@ -31,12 +31,16 @@ async function seedDatabase() {
     const password = process.env.ADMIN_PASSWORD || '9908140066@sky';
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Delete the old default 'admin' user if we are using a different username
+    if (username !== 'admin') {
+      const deleteResult = await User.deleteOne({ username: 'admin' });
+      if (deleteResult.deletedCount > 0) {
+        console.log('[DB Seed] Successfully deleted old default "admin" user.');
+      }
+    }
+
     const adminUser = await User.findOne({ username });
     if (!adminUser) {
-      // If we are migrating from the old 'admin' user, clean it up
-      if (username !== 'admin') {
-        await User.deleteOne({ username: 'admin' });
-      }
       await User.create({
         username,
         password: hashedPassword,
