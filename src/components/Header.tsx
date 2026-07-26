@@ -149,25 +149,6 @@ export default function Header({
   return (
     <>
       <header className="header-wrapper">
-        {/* Top Utility Bar */}
-        <div className="top-bar" style={{ display: isSticky ? 'none' : 'block' }}>
-          <div className="top-bar-container">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=shylender@skylifesciencessolutions.com" target="_blank" rel="noopener noreferrer" className="top-bar-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              shylender@skylifesciencessolutions.com
-            </a>
-            <button className="top-bar-link" onClick={onOpenContact}>
-              Contact Us
-            </button>
-            <button className="top-bar-link" onClick={onOpenLang}>
-              🌐 {currentLang}
-            </button>
-          </div>
-        </div>
-
         {/* Main Navigation */}
         <div className="main-header" style={{ height: isSticky ? '100px' : '125px' }}>
           {/* Logo */}
