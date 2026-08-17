@@ -365,7 +365,7 @@ When a visitor submits the contact form:
 
 ## License
 
-Private — All rights reserved. Sky Life Sciences Solutions LLP.
+Private — All rights reserved. Sky Life Sciences Solutions.
 
 ---
 

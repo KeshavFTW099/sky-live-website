@@ -407,12 +407,12 @@ export default function WhatWeDo({ content, onOpenContact }: any) {
         })}
       </div>
 
-      {/* Why Sky Lifesciences Solutions - Horizontal grid */}
+      {/* Why Sky Life Sciences Solutions - Horizontal grid */}
       <section className="section alt-bg" style={{ padding: 'var(--whitespace-xl) 0', borderBottom: 'none' }}>
         <div className="container">
           <div className="section-header-centered" style={{ marginBottom: 'var(--whitespace-lg)' }}>
             <span className="section-meta">PARTNERSHIP VALUE</span>
-            <h2 className="section-title" style={{ fontSize: '36px', fontWeight: '400', margin: 0 }}>Why Sky Lifesciences Solutions</h2>
+            <h2 className="section-title" style={{ fontSize: '36px', fontWeight: '400', margin: 0 }}>Why Sky Life Sciences Solutions</h2>
           </div>
 
           <div className="cards-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>

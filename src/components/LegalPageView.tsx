@@ -249,7 +249,7 @@ export default function LegalPageView({ legalData, policyKey, navigateTo }) {
               </h1>
               
               <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '32px', fontStyle: 'italic', display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed var(--border-color)', paddingBottom: '12px' }}>
-                <span>Sky Life Sciences Solutions LLP</span>
+                <span>Sky Life Sciences Solutions</span>
                 <span>Last Updated: {activePolicy.lastUpdated}</span>
               </div>
 

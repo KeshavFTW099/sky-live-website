@@ -44,8 +44,8 @@ export default function Hero({ content, onOpenContact }) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           style={{ flex: '1 1 500px', maxWidth: '620px' }}
         >
-          <h1 
-            className="hero-title" 
+          <h1
+            className="hero-title"
             style={{ fontSize: '46px', lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '20px' }}
             dangerouslySetInnerHTML={{ __html: title }}
           />

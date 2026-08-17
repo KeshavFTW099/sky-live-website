@@ -89,7 +89,7 @@ export async function POST(req: Request) {
         });
 
         await transporter.sendMail({
-          from: `"Sky Life Sciences" <${smtpUser}>`,
+          from: `"Sky Life Sciences Solutions" <${smtpUser}>`,
           to: 'shylender@skylifesciencessolutions.com',
           subject: `[New Enquiry] - ${name} from ${company || 'Individual'}`,
           html: emailHtml,

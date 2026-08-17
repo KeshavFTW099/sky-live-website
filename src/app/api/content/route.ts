@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Content from '@/models/Content';
 import { ContentUpdateSchema } from '@/lib/validation';
+import { revalidatePath } from 'next/cache';
 
 // POST: Save/Update CMS Content configuration (Protected by middleware)
 export async function POST(req: Request) {
@@ -31,6 +32,37 @@ export async function POST(req: Request) {
       validationResult.data,
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
+
+    // Revalidate paths to purge the Next.js cache
+    const pathsToRevalidate = [
+      '/',
+      '/about-the-director',
+      '/careers',
+      '/privacy-policy',
+      '/terms-conditions',
+      '/cookie-policy',
+      '/disclaimer',
+      '/accessibility',
+      '/products',
+      '/products/[slug]',
+      '/services',
+      '/what-we-do',
+      '/sales'
+    ];
+
+    for (const p of pathsToRevalidate) {
+      try {
+        revalidatePath(p);
+      } catch (err) {
+        console.error(`Failed to revalidate path ${p}:`, err);
+      }
+    }
+
+    try {
+      revalidatePath('/', 'layout');
+    } catch (err) {
+      console.error('Failed to revalidate layout path:', err);
+    }
 
     return NextResponse.json({ success: true, content: updatedContent });
   } catch (error: any) {

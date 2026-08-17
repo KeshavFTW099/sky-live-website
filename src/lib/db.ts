@@ -77,6 +77,50 @@ async function seedDatabase() {
       } else {
         console.warn('[DB Seed] Warning: content.json not found. Skipping content seed.');
       }
+    } else {
+      // Ensure company name is always clean in existing database documents (removes LLP, fixes spelling/spacing)
+      const existingContent = await Content.findOne({});
+      if (existingContent) {
+        const serialized = JSON.stringify(existingContent);
+        if (serialized.includes('LLP') || serialized.includes('Lifesciences')) {
+          console.log('[DB Seed] Stale company name format detected in DB. Running sanitization...');
+          
+          // Helper to recursively clean text fields
+          const cleanObj = (obj: any): any => {
+            if (obj === null || obj === undefined) return obj;
+            if (typeof obj === 'string') {
+              let cleaned = obj.replace(/Sky\s+Life\s*sciences\s+Solutions\s+LLP/gi, 'Sky Life Sciences Solutions');
+              cleaned = cleaned.replace(/Sky\s+Lifesciences\s+Solutions\s+LLP/gi, 'Sky Life Sciences Solutions');
+              cleaned = cleaned.replace(/\bSky\s+Lifesciences\s+Solutions\b/gi, 'Sky Life Sciences Solutions');
+              cleaned = cleaned.replace(/\bSky\s+Life\s+Sciences\s+Solutions\b/gi, 'Sky Life Sciences Solutions');
+              return cleaned;
+            }
+            if (Array.isArray(obj)) {
+              return obj.map(item => cleanObj(item));
+            }
+            if (typeof obj === 'object') {
+              if (obj.constructor && (obj.constructor.name === 'ObjectId' || obj.constructor.name === 'Date')) {
+                return obj;
+              }
+              const newObj: any = {};
+              for (const key of Object.keys(obj)) {
+                newObj[key] = cleanObj(obj[key]);
+              }
+              return newObj;
+            }
+            return obj;
+          };
+
+          const cleanedData = cleanObj(existingContent.toObject());
+          delete cleanedData._id;
+          delete cleanedData.__v;
+          delete cleanedData.createdAt;
+          delete cleanedData.updatedAt;
+
+          await Content.replaceOne({ _id: existingContent._id }, cleanedData);
+          console.log('[DB Seed] Database content sanitized successfully.');
+        }
+      }
     }
   } catch (error) {
     console.error('[DB Seed] Seeding error:', error);
